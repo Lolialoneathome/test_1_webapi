@@ -1,8 +1,4 @@
 ﻿using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
@@ -10,9 +6,20 @@ namespace ConsoleApp1
     {
         public static void Main(string[] args)
         {
-            var client = new RestClient("localost:5000/users");
+            var client = new RestClient("https://localhost:44319/users");
+            var token = new RestClient("https://localhost:44319/token/u/p");
             var request = new RestRequest(Method.GET);
-            IRestResponse response = client.Execute(request);
+            request.AddHeader("Content-Type", "text/json");
+            //request.AddHeader("Accept", "application/xml");
+
+            IRestResponse myToken = token.Execute(request);
+
+
+            var requestSecure = new RestRequest(Method.GET);
+            requestSecure.AddHeader("Content-Type", "text/json");
+            requestSecure.AddHeader("Authorization", "Bearer " + myToken.Content);
+
+            IRestResponse users = client.Execute(requestSecure);
         }
     }
 }

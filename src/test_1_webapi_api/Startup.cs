@@ -9,6 +9,10 @@ using test_1_webapi_api.Repositories;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Text;
 
 namespace test_1_webapi_api
 {
@@ -53,6 +57,8 @@ namespace test_1_webapi_api
                 config.OutputFormatters.Add(new XmlSerializerOutputFormatter());
             });
 
+            services.AddAuthorization();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<IRepository<User>, JsonplaceholderRepository<User>>(serviceProvider =>
             {
@@ -71,6 +77,24 @@ namespace test_1_webapi_api
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            var key = Encoding.UTF8
+                              .GetBytes("401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429090fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1");
+
+            var optionsJwt = new JwtBearerOptions
+            {
+
+                TokenValidationParameters = {
+                   ValidIssuer = "ExampleIssuer",
+                   ValidAudience = "ExampleAudience",
+                   IssuerSigningKey = new SymmetricSecurityKey(key),
+                   ValidateIssuerSigningKey = true,
+                   ValidateLifetime = true,
+                   ClockSkew = TimeSpan.Zero
+                }
+            };
+
+            app.UseJwtBearerAuthentication(optionsJwt);
 
             //app.UseApplicationInsightsRequestTelemetry();
 

@@ -20,7 +20,8 @@
       "type": "platform"
     },
     "RestSharp.NetCore": "105.2.4-rc4-24214-01",
-    "test_1_webapi": "1.0.0-*"
+    "test_1_webapi": "1.0.0-*",
+    "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0"
   },
 
   "tools": {

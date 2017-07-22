@@ -4,10 +4,11 @@ using test_1_webapi_Domain.Repositories;
 using test_1_webapi_Domain.DataModels;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace test_1_webapi_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize, Route("api/[controller]")]
     public class UsersController : EntityController<User>
     {
         protected readonly IRepository<Album> _albumsRepository;

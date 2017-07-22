@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using test_1_webapi_Domain.Repositories;
 using test_1_webapi_Domain.DataModels;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace test_1_webapi_api.Controllers
 {
