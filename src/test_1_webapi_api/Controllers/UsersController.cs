@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace test_1_webapi_api.Controllers
 {
     [Authorize, Route("api/[controller]")]
-    public class UsersController : EntityController<User>
+    public class UsersController : ModelController<User>
     {
         protected readonly IRepository<Album> _albumsRepository;
 

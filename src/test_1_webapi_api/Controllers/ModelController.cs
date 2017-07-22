@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace test_1_webapi_api.Controllers
 {
-    public abstract class EntityController<TEntity> : Controller
+    public abstract class ModelController<TEntity> : Controller
         where TEntity : IModel
     {
         protected readonly IRepository<TEntity> _repository;
 
-        public EntityController(IRepository<TEntity> repository)
+        public ModelController(IRepository<TEntity> repository)
         {
             if (repository == null)
                 throw new ArgumentNullException(nameof(repository));
