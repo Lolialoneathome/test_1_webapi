@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using test_1_webapi_Domain.Entities;
+using test_1_webapi_Domain.DataModels;
 
 namespace test_1_webapi_Domain.Repositories
 {
     public interface IRepository<TEntity>
-        where TEntity : IEntity
+        where TEntity : IModel
     {
         void Add(TEntity entity);
 

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using test_1_webapi_Domain.Repositories;
-using test_1_webapi_Domain.Entities;
+using test_1_webapi_Domain.DataModels;
 using System;
 
 namespace test_1_webapi_api.Controllers
 {
     public abstract class EntityController<TEntity> : Controller
-        where TEntity : IEntity
+        where TEntity : IModel
     {
         protected readonly IRepository<TEntity> _repository;
 

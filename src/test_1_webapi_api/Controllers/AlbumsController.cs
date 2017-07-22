@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using test_1_webapi_Domain.Repositories;
-using test_1_webapi_Domain.Entities;
+using test_1_webapi_Domain.DataModels;
 
 namespace test_1_webapi_api.Controllers
 {

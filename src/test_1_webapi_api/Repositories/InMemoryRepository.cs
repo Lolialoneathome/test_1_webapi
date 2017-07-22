@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using test_1_webapi_Domain.Entities;
+using test_1_webapi_Domain.DataModels;
 
 using test_1_webapi_Domain.Repositories;
 
@@ -10,7 +10,7 @@ namespace test_1_webapi_api.Repositories
     //Этот класс не нужен
     //Он нужен был, пока у меня интернета не было :)
     public class InMemoryRepository<TEntity> : IRepository<TEntity>
-        where TEntity : IEntity
+        where TEntity : IModel
     {
         private readonly List<TEntity> _list = new List<TEntity>();
 

@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using test_1_webapi_Domain.Services;
 using test_1_webapi_Domain.Repositories;
-using test_1_webapi_Domain.Entities;
+using test_1_webapi_Domain.DataModels;
 using test_1_webapi_api.Repositories;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.Mvc;
 
 namespace test_1_webapi_api
 {
@@ -41,18 +39,30 @@ namespace test_1_webapi_api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            
+
 
             // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
+            //services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddMvc();
+            services.AddMvc(config =>
+            {
+                // Add XML Content Negotiation
+                config.RespectBrowserAcceptHeader = true;
+                config.Filters.Add(new RequireHttpsAttribute());
+                config.InputFormatters.Add(new XmlSerializerInputFormatter());
+                config.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+            });
 
-            services.AddSingleton<IRepository<User>, InMemoryRepository<User>>();
-            services.AddSingleton<IRepository<Album>, InMemoryRepository<Album>>();
 
-            services.AddSingleton<IUserDomainService, UserDomainService>();
-            services.AddSingleton<IAlbumDomainService, AlbumDomainService>();
+            services.AddSingleton<IRepository<User>, JsonplaceholderRepository<User>>(serviceProvider =>
+            {
+                return new JsonplaceholderRepository<User>("http://jsonplaceholder.typicode.com/users");
+            });
+            services.AddSingleton<IRepository<Album>, JsonplaceholderRepository<Album>>(serviceProvider =>
+            {
+                return new JsonplaceholderRepository<Album>("http://jsonplaceholder.typicode.com/albums");
+            });
+            
 
         }
 
@@ -62,11 +72,16 @@ namespace test_1_webapi_api
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
+            //app.UseApplicationInsightsRequestTelemetry();
 
-            app.UseApplicationInsightsExceptionTelemetry();
+            //app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseMvc();
+
+            var options = new RewriteOptions()
+                .AddRedirectToHttps();
+
+            app.UseRewriter(options);
         }
     }
 }
